@@ -1,0 +1,22 @@
+typedef uint16 hfloat <read=hfloatRead>;
+
+string hfloatRead( const hfloat &v )
+{
+   local uint32 dataValue;
+   local float  fValue;
+   
+   dataValue = 0;
+   
+   if (v & 0x7C00)
+   {
+      dataValue = ((v & 0x7C00) + 0x1C000) << 13;
+   }
+   
+   dataValue |= ((v & 0x8000) << 16) | ((v & 0x03FF) << 13);
+   
+   local string s;
+   SPrintf( s, "%x", dataValue );
+   SScanf( s, "%x", fValue );
+   SPrintf( s, "%f", fValue );
+   return s;
+}

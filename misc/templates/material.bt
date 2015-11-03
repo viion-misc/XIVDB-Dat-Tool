@@ -1,0 +1,47 @@
+
+struct Header
+{
+    uint32 unknown;
+    uint32 file_size;
+    uint16 string_block_size;
+    uint16 shpk_string_offset;
+    ubyte  tex_count;
+    ubyte  map_count;
+    ubyte  color_set_count;
+    ubyte  unknown3;
+};
+
+Header header;
+
+uint32 string_offsets[header.tex_count + header.map_count + header.color_set_count];
+
+char string_block[header.string_block_size];
+
+uint32 zero;
+uint16 mat_params_size;
+uint16 some_struct_count;
+uint16 mat_param_count;
+uint16 sampler_count;
+uint16 unknown4;
+uint16 unknown5;
+
+struct
+{
+    uint32 unknown[2];
+} some_struct[some_struct_count];
+
+struct
+{
+    uint32 id;
+    uint16 offset;
+    uint16 size;
+} mat_params[mat_param_count];
+
+struct
+{
+    uint32 id;
+    uint32 flags;
+    uint32 index;
+} samplers[sampler_count];
+
+float mat_params_buffer[mat_params_size / 4];

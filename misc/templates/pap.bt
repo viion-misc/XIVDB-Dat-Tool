@@ -1,0 +1,37 @@
+//--------------------------------------
+//--- 010 Editor v5.0 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+struct Header
+{
+    char magic[4];
+    uint16 unknown1;
+    uint16 unknown2;
+    uint16 unknown_type3_count;
+    uint16 model_number;
+    uint16 unknown4;
+    uint16 unknown5;
+    uint16 unknown6; 
+    uint16 unknown7;
+    uint16 unknown8;
+    uint16 data_size; 
+    uint16 unknown10;
+};
+
+struct UnknownType3
+{
+    char name[0x20];
+    uint16 unknown1;
+    uint16 unknown2;
+    uint16 unknown3;
+    uint16 unknown4;
+};
+
+Header header;
+UnknownType3 unknown_type3[header.unknown_type3_count];
+char havok_data[header.data_size - FTell()];

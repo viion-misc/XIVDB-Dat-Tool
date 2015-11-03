@@ -1,0 +1,9 @@
+python xivdmcli.py extract exd
+python xivdmcli.py extract exh
+python xivdmcli.py extract view
+python xivdmcli.py extract json
+python xivdmcli.py extract folder -n ui/uld/
+python xivdmcli.py extract gen -n icons
+python xivdmcli.py extract gen -n maps_icons
+python xivdmcli.py extract gen -n models
+python xivdmcli.py extract music

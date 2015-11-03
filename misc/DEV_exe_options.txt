@@ -1,0 +1,123 @@
+<FINAL FANTASY XIV Dev Config File = DEV>
+
+<System>
+ConfigVersion
+AssertMode
+GameMode
+TestCaseConditional
+TestCaseCategory
+CharaUpdateVariance
+GameObjectManagerHasCopyTable
+TargetSystemOptimized
+UseInputThread
+UseSqPack
+UseSqPackCategoryArray
+NumberOfAvailableSPU
+PerformanceEnable
+PerformanceHide
+ResourceEnable
+ResourceCategory
+ResourceType
+DataPathType
+SoundEnable
+BookmarkCategory
+TestSID
+IgnoreVer
+DebugDirPath
+GFxMode
+PadEnable
+SystemATK
+
+<Debug Settings>
+LuaDebugger
+PathAutoTest
+
+<Network Settings>
+LobbyHost01
+LobbyPort01
+LobbyHost02
+LobbyPort02
+LobbyRetryCount
+LobbyRetryInterval
+LobbyPing
+FrontPort
+FrontHost
+FrontProtocol
+UseCfgFrontend
+AutoLogin
+Ticket
+World
+ZoneName
+SqexID
+StandAloneLogin
+
+<View Settings>
+
+<Graphics Settings>
+
+<Platform Settings>
+
+<Config Settings>
+
+<Patch Settings>
+SkipBootupVercheck
+SkipLauncherCISLogin
+SkipLauncherVercheck
+AnotherRepoBootup
+AnotherRepoBootupRepo
+AnotherRepoLauncher
+AnotherRepoLauncherRepo
+KickClient
+KickClientPath
+
+<DebugMenu Settings>
+DebugMenuArgsNum
+DebugMenuArgs
+
+<ToolMenu Settings>
+MayaCameraAlt
+EnableCommunicator
+CommunicatorPort
+CommunicatorHostClient
+CommunicatorHostTool
+CommunicatorPortTool
+
+<UI Settings>
+EnableFlyTextColor
+FTCSelf
+FTCParty
+FTCOther
+FTCEnemy
+FTCDamageAA
+FTCCriticalAA
+FTCDamageAction
+FTCMiss
+FTCMissAction
+FTCDodge
+FTCDodgeAction
+FTCBuff
+FTCDebuff
+FTCExp
+FTCDamageMp
+FTCDamageTp
+FTCHealHp
+FTCHealMp
+FTCHealTp
+FTCLevelUp
+FTCInvulnerable
+FTCDropitem
+FTCCritcalAction
+FTCCraftProgress
+FTCCraftQuality
+FTCCraftMaterialHp
+FTCCriticalHealHp
+FTCCriticalHealMp
+FTCCriticalHealTp
+FTCBuffError
+FTCBuffOff
+FTCDebuffOff
+FTCProvoke
+FTCBuffResist
+FTCPartBreak
+FTCFFullResist
+FTCMax

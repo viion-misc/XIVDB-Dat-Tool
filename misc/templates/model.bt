@@ -1,0 +1,206 @@
+#include "half.bt"
+
+struct FileHeader
+{
+    char unknown[0x40];
+    uint16 mesh_count;
+    uint16 material_count;
+};
+
+struct MeshHeader
+{
+    ubyte unknown[0x88];
+};
+
+struct StringBlock
+{
+    uint32 count;
+    uint32 block_size;
+    char strings[block_size];
+};
+
+struct Header
+{
+    float unknown1;
+    uint16 mesh_count;
+    uint16 type1_count;
+    uint16 bones_links_count;
+    uint16 material_count;
+    uint16 bone_count;
+    uint16 type6_count;
+    uint16 type8_count;
+    uint16 type9_count;
+    uint16 type10_count;
+    ubyte unknown7;
+    ubyte unknown8;
+    uint16 type7_count;
+    uint16 type3_count;
+    uint32 zeros4[2];
+    uint16 unknown8;
+    uint16 face_count;
+    uint32 zeros5[4];
+};
+
+struct LodModel
+{
+    uint16 mesh_index;
+    uint16 mesh_count;
+    float unknown1;
+    float unknown2;
+    uint16 mesh_index_2;
+    uint16 mesh_count_2;
+    uint32 next_mesh_index;
+    uint16 index;
+    uint16 unknown3;
+    uint32 unknown4;
+    uint32 unknown5;
+    uint32 specular_color;
+    uint32 unknown7;
+    uint32 unknown8;
+    uint32 vertex_buffer_size;
+    uint32 index_buffer_size;
+    uint32 vertex_buffer_offset;
+    uint32 index_buffer_offset;
+};
+
+struct Mesh
+{
+    uint32 vert_buf_count;
+    uint32 indices_count; // *2
+    uint16 material_index;
+    uint16 bones_links_index;
+    uint16 bones_links_count;
+    uint16 lod_level;
+    uint32 indices_index; // *2
+    uint32 vert_buf_offset_0;
+    uint32 vert_buf_offset_1;
+    uint32 unknown10;
+    ubyte vert_buf_size_0;
+    ubyte vert_buf_size_1;
+    uint16 unknown12; 
+};
+
+struct Type3
+{
+    uint16 indices_count;  // *2
+    uint16 unknown1;
+    uint16 indices_index;  // *2
+    uint16 unknown3;
+    uint16 vert_buf_offset;
+    uint16 unknown5;
+    uint16 vert_buf_count;
+    uint16 face_index;
+    uint16 face_count;
+    uint16 unknown7;
+};
+
+struct BonesLinks
+{
+    uint32 indices_index; // *2
+    uint32 indices_count; // *2
+    uint32 index;
+    int16 bone_index;
+    uint16 bone_count;
+};
+
+struct Faces
+{
+    uint32 indices_index; // *2
+    uint32 indices_count; // *2
+    uint32 index;
+};
+
+struct Type6
+{
+    uint16 bone_indexes[64];
+    uint32 unknown2;
+};
+
+struct Point
+{
+    float x;
+    float y;
+    float z;
+    float w;
+};
+
+struct BoundingBox
+{
+    Point min;
+    Point max;
+};
+
+struct Type7
+{
+    uint32 unknown1;
+    uint32 unknown2;
+    float unknown3;
+    float unknown4;
+    uint32 zero2[3];
+    float unknown5;
+};
+
+struct Type8
+{
+    uint16 string_offset;
+    uint16 unknown;
+    uint16 type9_index_0;
+    uint16 type9_index_1;
+    uint16 type9_index_2;
+    uint16 type9_count_0;
+    uint16 type9_count_1;
+    uint16 type9_count_2;
+};
+
+struct Type9
+{
+    uint32 unknown;
+    uint32 type10_count;
+    uint32 type10_index;
+};
+
+struct Type10
+{
+    uint16 id1;
+    uint16 id2;
+};
+
+
+// Read of Data
+
+FileHeader file_header;
+MeshHeader mesh_headers[file_header.mesh_count];
+StringBlock string_block;
+
+Header header;
+
+Type7 type7[header.type7_count];
+LodModel lod_models[3];
+Mesh meshes[header.mesh_count];
+
+uint32 type1_string_offsets[header.type1_count];
+
+Type3 type3[header.type3_count];
+BonesLinks bones_links[header.bones_links_count];
+Faces faces[header.face_count];
+
+uint32 materials_string_offsets[header.material_count];
+uint32 bones_string_offsets[header.bone_count];
+
+Type6 type6[header.type6_count];
+
+Type8 type8[header.type8_count];
+Type9 type9[header.type9_count];
+Type10 type10[header.type10_count];
+
+if (header.bone_count > 0)
+{
+    uint32 bone_indexes_size;
+    uint16 bone_indexes[bone_indexes_size / 2];
+}
+
+uint32 offset_to_bounding_boxes;
+
+FSkip(offset_to_bounding_boxes - 3);
+
+BoundingBox bounding_boxes[3 + header.mesh_count + header.bone_count];

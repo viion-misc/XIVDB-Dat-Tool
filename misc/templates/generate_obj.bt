@@ -1,0 +1,87 @@
+#include "model.bt"
+
+local uint32 lod = 0;
+local uint32 face_index;
+local uint32 mesh_index;
+
+local int vertices_file = FileNew("TEXT");
+local int faces_file = FileNew("TEXT");
+
+local uint32 vertex_index;
+local uint32 vertex_offset = 1;
+local uint32 triangle_index;
+
+lod = 0;
+
+struct
+{
+    for (mesh_index = lod_models[lod].mesh_index; 
+         mesh_index < lod_models[lod].mesh_index + lod_models[lod].mesh_count;
+         mesh_index++)
+    {
+        struct
+        {
+            FSeek(lod_models[lod].vertex_buffer_offset
+                  + meshes[mesh_index].vert_buf_offset_0);
+
+            if (mesh_headers[mesh_index].unknown[2] == 0x0E)
+            {
+                struct
+                {
+                    hfloat x;
+                    hfloat y;
+                    hfloat z;
+                    hfloat w;
+                    char padding[meshes[mesh_index].vert_buf_size_0 - 8]; 
+                } vertices[meshes[mesh_index].vert_buf_count];
+                
+                for(vertex_index = 0; vertex_index < meshes[mesh_index].vert_buf_count; vertex_index++)
+                {
+                    FPrintf(vertices_file, "v %s %s %s %s\n",
+                            hfloatRead(vertices[vertex_index].x),
+                            hfloatRead(vertices[vertex_index].y),
+                            hfloatRead(vertices[vertex_index].z),
+                            hfloatRead(vertices[vertex_index].w));                            
+                }
+            }
+            else if (mesh_headers[mesh_index].unknown[2] == 0x02)
+            {
+                struct
+                {
+                    float x;
+                    float y;
+                    float z;
+                    char padding[meshes[mesh_index].vert_buf_size_0 - 12]; 
+                } vertices[meshes[mesh_index].vert_buf_count];
+                
+                for(vertex_index = 0; vertex_index < meshes[mesh_index].vert_buf_count; vertex_index++)
+                {
+                    FPrintf(vertices_file, "v %f %f %f\n",
+                            vertices[vertex_index].x,
+                            vertices[vertex_index].y,
+                            vertices[vertex_index].z);                            
+                }
+            }
+
+            FSeek(lod_models[lod].index_buffer_offset
+                  + (meshes[mesh_index].indices_index * 2));
+
+            struct
+            {
+                uint16 i1;
+                uint16 i2;
+                uint16 i3;
+            } triangles[meshes[mesh_index].indices_count / 3];
+            
+            for(triangle_index = 0; triangle_index < meshes[mesh_index].indices_count / 3; triangle_index++)
+            {
+                FPrintf(faces_file, "f %d %d %d\n",
+                        triangles[triangle_index].i1 + vertex_offset,
+                        triangles[triangle_index].i2 + vertex_offset,
+                        triangles[triangle_index].i3 + vertex_offset);                            
+            }
+
+            vertex_offset += meshes[mesh_index].vert_buf_count;
+        } meshes_data;
+    }  
+} data;  

@@ -1,0 +1,98 @@
+struct
+{
+    char magic[4];
+    uint32 unknown;
+    char dxmagic[4];
+    uint32 file_size;
+    uint32 data_offset;
+    uint32 strings_offset;
+    uint32 vs_count;
+    uint32 ps_count;
+    uint32 mat_params_size;
+    uint32 mat_param_count;
+    uint32 uniform_count;
+    uint32 sampler_count;
+
+    uint32 unknown_a_count;
+    uint32 unknown_b_count;
+    uint32 unknown_c_count;
+    uint32 record_type1_count;
+    uint32 record_type2_count;
+} file_header;
+
+local uint32 current_offset = 0;
+
+struct Register
+{
+    uint32 id;
+    uint32 string_offset;
+    uint32 string_size;
+    uint16 register;
+    uint16 size;
+    {
+        current_offset = FTell();
+        FSeek(file_header.strings_offset + string_offset);
+        char name[string_size];
+        FSeek(current_offset);
+    }
+};
+
+struct Shader
+{
+    uint32 offset;
+    uint32 size;
+    uint16 uniform_count;
+    uint16 sampler_count;
+    Register uniforms[uniform_count]<optimize=false>;
+    Register samplers[sampler_count]<optimize=false>;
+};
+
+struct MatParam
+{
+    uint32 id;
+    uint16 offset;
+    uint16 size;
+};
+
+struct SubRecordType1
+{
+    uint32 unknown1;
+    uint32 unknown2;
+    uint32 unknown3;
+};
+
+struct RecordType1
+{
+    uint32 count;
+    byte indices[16];
+    uint32 skip[3];
+    uint32 skipa[file_header.unknown_a_count];
+    uint32 skipb[file_header.unknown_b_count];
+    uint32 skipc[file_header.unknown_c_count];
+    SubRecordType1 sub_records[count];
+};
+
+struct RecordType2
+{
+    uint32 id;
+    uint32 hash;
+};
+
+Shader vsrecords[file_header.vs_count]<optimize=false>;
+Shader psrecords[file_header.ps_count]<optimize=false>;
+
+MatParam mat_params[file_header.mat_param_count];
+
+Register uniforms[file_header.uniform_count]<optimize=false>;
+Register samplers[file_header.sampler_count]<optimize=false>;
+
+uint32 skip[3];
+
+uint32 skipa[file_header.unknown_a_count * 2];
+uint32 skipb[file_header.unknown_b_count * 2];
+uint32 skipc[file_header.unknown_c_count * 2];
+
+RecordType1 records_1[file_header.record_type1_count]<optimize=false>;
+
+RecordType2 records_2[file_header.record_type2_count];
+

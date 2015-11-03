@@ -1,0 +1,9 @@
+[game]
+path=your game path
+
+[logs]
+path=/logs
+level=logging.DEBUG
+
+[output]
+path=/output

@@ -1,0 +1,85 @@
+struct DxtColor
+{
+    uint16 r:5;
+    uint16 g:6;
+    uint16 b:5;
+};
+
+struct Dxt1
+{
+    DxtColor colors[2];
+    uint32 value_00:2;
+    uint32 value_01:2;
+    uint32 value_02:2;
+    uint32 value_03:2;
+    uint32 value_04:2;
+    uint32 value_05:2;
+    uint32 value_06:2;
+    uint32 value_07:2;
+    uint32 value_08:2;
+    uint32 value_09:2;
+    uint32 value_10:2;
+    uint32 value_11:2;
+    uint32 value_12:2;
+    uint32 value_13:2;
+    uint32 value_14:2;
+    uint32 value_15:2;
+};
+
+typedef Dxt1 dxt1_type <read=dxt1Read>;
+
+string outputColorRGB(const uint16& r, const uint16& g, const uint16& b)
+{
+    local string s;
+    SPrintf( s, "(r:%d|g:%d|b:%d)", r, g, b);
+    return s;
+}
+
+string outputColorDXT(const DxtColor& c)
+{
+    return outputColorRGB(c.r, c.g, c.b);
+}
+
+string dxtNormalColors(const dxt1_type& v)
+{
+    local uint16 color2_r = (2 * v.colors[0].r + v.colors[1].r) / 3;
+    local uint16 color2_g = (2 * v.colors[0].g + v.colors[1].g) / 3;
+    local uint16 color2_b = (2 * v.colors[0].b + v.colors[1].b) / 3;
+
+    local uint16 color3_r = (v.colors[0].r + 2 * v.colors[1].r) / 3;
+    local uint16 color3_g = (v.colors[0].g + 2 * v.colors[1].g) / 3;
+    local uint16 color3_b = (v.colors[0].b + 2 * v.colors[1].b) / 3;
+
+    local string s;
+    SPrintf( s, "<%s-%s-%s-%s>", 
+        outputColorDXT(v.colors[0]), 
+        outputColorDXT(v.colors[1]),
+        outputColorRGB(color2_r, color2_g, color2_b),
+        outputColorRGB(color3_r, color3_g, color3_b));
+    return s;
+}
+
+string dxt1Read(const dxt1_type& v)
+{
+    if (v.colors[0].r > v.colors[1].r
+        || (v.colors[0].r == v.colors[1].r
+            && (v.colors[0].g > v.colors[1].g
+                || (v.colors[0].g == v.colors[1].g 
+                    && v.colors[0].b == v.colors[1].b))))
+    {
+        return dxtNormalColors(v);
+    }
+    else
+    {
+        local uint16 color2_r = (v.colors[0].r + v.colors[1].r) / 2;
+        local uint16 color2_g = (v.colors[0].g + v.colors[1].g) / 2;
+        local uint16 color2_b = (v.colors[0].b + v.colors[1].b) / 2;
+
+        local string s;
+        SPrintf( s, "<%s-%s-%s>", 
+            outputColorDXT(v.colors[0]), 
+            outputColorDXT(v.colors[1]),
+            outputColorRGB(color2_r, color2_g, color2_b));
+        return s;
+    }
+}

@@ -1,0 +1,37 @@
+
+struct Header
+{
+    uint32 unknown1;
+    uint32 unknown2;
+    uint16 width;
+    uint16 height;
+    uint16 unknown3;
+    uint16 mipmap_count;
+    uint32 unknown5;
+    uint32 unknown6;
+    uint32 unknown7;
+    uint32 header_size;
+};
+
+struct DxtData(uint32 size)
+{
+    char bytes[size];
+};
+
+Header header;
+
+uint32 mipmap_offset[header.mipmap_count - 1];
+
+FSkip(header.header_size - sizeof(Header) - sizeof(uint32) * (header.mipmap_count - 1));
+
+local uint32 mipmap_level = 0;
+local uint32 start_offset = FTell();
+while (mipmap_level < header.mipmap_count - 1)
+{
+    DxtData dxt_data(mipmap_offset[mipmap_level] - start_offset);
+    start_offset = mipmap_offset[mipmap_level];
+    mipmap_level += 1;
+}
+
+DxtData dxt_data(FileSize() - FTell());
+
