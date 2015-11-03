@@ -1,8 +1,19 @@
-XIVDB Data Extraction Tool
-=======
+# XIVDB Data Extraction Tool
 
 This is not really in development anymore. I am replacing it all at some point with an improved version but with far better tools out there. I would like to release this for research purposes. It is not built by me, so I may not be able to answer everything, head to https://github.com/viion/XIV-Datamining for better research/discussions.
 
+---
+
+# How to use
+
+- Make sure you have Python 3+
+- Copy `config.cfg.dist` to `config.cfg`
+- Edit `config.cfg` and add your game path`
+- Open Windows Command Prompt/Terminal in the same location as `xivdmcli.py`
+- Run one of the commands below, eg `python xivdmcli.py extract exd` to export all EXD
+
+
+---
 
 **Last Tested and Verified**
 - Patch 3.0+
