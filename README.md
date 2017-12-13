@@ -1,3 +1,12 @@
+## This tool is dead, no development is being done it.
+
+Please use: https://github.com/ufx/SaintCoinach
+
+
+---
+
+---
+
 # XIVDB Data Extraction Tool
 
 This is not really in development anymore. I am replacing it all at some point with an improved version but with far better tools out there. I would like to release this for research purposes. It is not built by me, so I may not be able to answer everything, head to https://github.com/viion/XIV-Datamining for better research/discussions.
