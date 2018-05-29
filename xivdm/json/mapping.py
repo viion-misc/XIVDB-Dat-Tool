@@ -771,6 +771,7 @@ def LogKind(data, id, v):
 def LogMessage(data, id, v):
     return {
         'name': string(data, id, 0),
+		'json': string(data, id, 0, enable_conditions = True),
     }
 
 def MainCommandCategory(data, id, v):
@@ -878,8 +879,8 @@ def Quest(exd_manager):
         }
 
         # if quest data
-        if v[981] != b'':
-            quest_base_exd_name = v[981].decode('utf-8')
+        if v[1006] != b'':
+            quest_base_exd_name = v[1006].decode('utf-8')
             quest_exd_name = 'quest/%s/%s' % (quest_base_exd_name[10:13], quest_base_exd_name)
             quest_exd_data = exd_manager.get_category(quest_exd_name).get_data()
             quest_exd_data_ln = quest_exd_data[list(quest_exd_data.keys())[0]]
