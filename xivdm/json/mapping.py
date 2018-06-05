@@ -63,8 +63,6 @@ def AddonParam(data, id, v):
 def AddonHud(data, id, v):
     return {
         'name': string(data, id, 0),
-        'command': string(data, id, 1),
-        'command_short': string(data, id, 2),
     }
 
 def AddonTransient(data, id, v):
